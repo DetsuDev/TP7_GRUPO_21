@@ -50,7 +50,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td colspan="4">
-                        <asp:ListView ID="ListView1" runat="server" DataSourceID="SqlDataSource1" GroupItemCount="3">
+                        <asp:ListView ID="ListView1" runat="server" DataSourceID="SqlDataSource1" GroupItemCount="3" OnItemCommand="ListView1_ItemCommand">
                             <EditItemTemplate>
                                 <td runat="server" style="background-color:#008A8C;color: #FFFFFF;">NombreSucursal:
                                     <asp:TextBox ID="NombreSucursalTextBox" runat="server" Text='<%# Bind("NombreSucursal") %>' />
@@ -72,7 +72,7 @@
                                 </table>
                             </EmptyDataTemplate>
                             <EmptyItemTemplate>
-<td runat="server" />
+                                <td runat="server" />
                             </EmptyItemTemplate>
                             <GroupTemplate>
                                 <tr id="itemPlaceholderContainer" runat="server">
@@ -93,12 +93,14 @@
                                     <br /></td>
                             </InsertItemTemplate>
                             <ItemTemplate>
-                                <td runat="server" style="background-color:#DCDCDC;color: #000000;">NombreSucursal:
+                                <td runat="server" style="background-color:#DCDCDC;color: #000000; text-align:center;">
                                     <asp:Label ID="NombreSucursalLabel" runat="server" Text='<%# Eval("NombreSucursal") %>' />
-                                    <br />DescripcionSucursal:
+                                    <br />
+                                    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl='<%# Eval("URL_Imagen_Sucursal") %>' Width="120px" Height="120px" />
+                                    <br />
                                     <asp:Label ID="DescripcionSucursalLabel" runat="server" Text='<%# Eval("DescripcionSucursal") %>' />
-                                    <br />URL_Imagen_Sucursal:
-                                    <asp:Label ID="URL_Imagen_SucursalLabel" runat="server" Text='<%# Eval("URL_Imagen_Sucursal") %>' />
+                                    <br />
+                                    <asp:Button ID="btnSeleccionar" runat="server" Text="Seleccionar" CommandName="Seleccionar" CommandArgument='<%# Eval("Id_Sucursal") %>' />
                                     <br /></td>
                             </ItemTemplate>
                             <LayoutTemplate>
@@ -139,7 +141,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td class="auto-style4">
-                        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:BDSucursalesConnectionString %>" ProviderName="<%$ ConnectionStrings:BDSucursalesConnectionString.ProviderName %>" SelectCommand="SELECT [NombreSucursal], [DescripcionSucursal], [URL_Imagen_Sucursal] FROM [Sucursal]"></asp:SqlDataSource>
+                        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:BDSucursalesConnectionString %>" ProviderName="<%$ ConnectionStrings:BDSucursalesConnectionString.ProviderName %>" SelectCommand="SELECT [Id_Sucursal], [NombreSucursal], [DescripcionSucursal], [URL_Imagen_Sucursal] FROM [Sucursal]"></asp:SqlDataSource>
                     </td>
                     <td colspan="2">&nbsp;</td>
                     <td>&nbsp;</td>
