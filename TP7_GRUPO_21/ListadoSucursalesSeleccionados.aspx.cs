@@ -11,7 +11,15 @@ namespace TP7_GRUPO_21
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                if (Session["SucursalesSeleccionadas"] != null)
+                {
+                    List<Sucursal> seleccionados = (List<Sucursal>)Session["SucursalesSeleccionadas"];
+                    GridView1.DataSource = seleccionados;
+                    GridView1.DataBind();
+                }
+            }
         }
     }
 }
