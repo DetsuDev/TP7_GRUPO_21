@@ -48,6 +48,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="2">&nbsp;</td>
+                    <td colspan="2" style="font-size: 20px; font-weight: bold;">
+                        &nbsp;</td>
+                </tr>
+                <tr>
                     <td>
                         <asp:DataList ID="dlProvincias" runat="server" DataSourceID="SqlDataSource1" Height="582px" Width="39px">
                             <ItemTemplate>
@@ -147,7 +153,9 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td class="auto-style4">
-                        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:BDSucursalesConnectionString %>" SelectCommand="SELECT * FROM [Provincia]"></asp:SqlDataSource>
+                        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:BDSucursalesConnectionString %>"
+                            SelectCommand="SELECT Id_Provincia, DescripcionProvincia FROM (SELECT 0 AS Id_Provincia, 'Todas' AS DescripcionProvincia, 0 AS SortOrder UNION ALL SELECT Id_Provincia, DescripcionProvincia, 1 AS SortOrder FROM Provincia) AS t ORDER BY SortOrder, DescripcionProvincia">
+                        </asp:SqlDataSource>
                     </td>
                     <td colspan="2">&nbsp;</td>
                     <td>&nbsp;</td>
