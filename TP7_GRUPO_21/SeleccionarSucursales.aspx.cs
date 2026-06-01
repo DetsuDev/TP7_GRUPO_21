@@ -1,54 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace TP7_GRUPO_21
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
+        Conexion con = new Conexion();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["SucursalesSeleccionadas"] == null)
+            if (!IsPostBack)
             {
-                DataTable dt = new DataTable();
-                dt.Columns.Add("ID_SUCURSAL");
-                dt.Columns.Add("NOMBRE");
-                dt.Columns.Add("DESCRIPCION");
-                Session["SucursalesSeleccionadas"] = dt;
+                CargarListView("SELECT Id_Sucursal, NombreSucursal, DescripcionSucursal, URL_Imagen_Sucursal FROM Sucursal");
+                if (Session["SucursalesSeleccionadas"] == null)
+                {
+                    Session["SucursalesSeleccionadas"] = new List<Sucursal>();
+                }
             }
+        }
+        private void CargarListView(string consulta)
+        {
+            DataTable dt = con.ObtenerTabla(consulta);
+            ListView1.DataSource = dt;
+            ListView1.DataBind();
         }
 
         protected void ListView1_ItemCommand(object sender, ListViewCommandEventArgs e)
         {
             if (e.CommandName == "Seleccionar")
             {
-                ListViewItem item = (ListViewItem)e.Item;
-                Label lblNombre = (Label)item.FindControl("NombreSucursalLabel");
-                Label lblDescripcion = (Label)item.FindControl("DescripcionSucursalLabel");
-
+                Label lblNombre = (Label)e.Item.FindControl("NombreSucursalLabel");
+                Label lblDesc = (Label)e.Item.FindControl("DescripcionSucursalLabel");
                 string id = e.CommandArgument.ToString();
-                DataTable dt = (DataTable)Session["SucursalesSeleccionadas"];
 
-                bool yaExiste = false;
-                foreach (DataRow fila in dt.Rows)
-                {
-                    if (fila["ID_SUCURSAL"].ToString() == id)
-                    {
-                        yaExiste = true;
-                        break;
-                    }
-                }
+                List<Sucursal> seleccionados = (List<Sucursal>)Session["SucursalesSeleccionadas"];
 
-                if (!yaExiste)
+                if (!seleccionados.Exists(s => s.IdSucursal.ToString() == id))
                 {
-                    dt.Rows.Add(id, lblNombre.Text, lblDescripcion.Text);
-                    Session["SucursalesSeleccionadas"] = dt;
+                    Sucursal nueva = new Sucursal();
+                    nueva.IdSucursal = int.Parse(id);
+                    nueva.NombreSucursal = lblNombre.Text;
+                    nueva.DescripcionSucursal = lblDesc.Text;
+
+                    seleccionados.Add(nueva);
+                    Session["SucursalesSeleccionadas"] = seleccionados;
                 }
             }
+        }
+        protected void ListView1_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+        {
+            DataPager pager = (DataPager)ListView1.FindControl("DataPager1");
+            pager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+
+            string busqueda = txtNombreSucursal.Text.Trim();
+            string consulta = "SELECT Id_Sucursal, NombreSucursal, DescripcionSucursal, URL_Imagen_Sucursal FROM Sucursal";
+
+            if (!string.IsNullOrEmpty(busqueda))
+            {
+                consulta += " WHERE NombreSucursal LIKE '%" + busqueda + "%'";
+            }
+
+            CargarListView(consulta);
+        }
+        protected void btnBuscarSucursal_Click(object sender, EventArgs e)
+        {
+            string busqueda = txtNombreSucursal.Text.Trim();
+
+            string consulta = "SELECT Id_Sucursal, NombreSucursal, DescripcionSucursal, URL_Imagen_Sucursal FROM Sucursal";
+            if (!string.IsNullOrEmpty(busqueda))
+            {
+                consulta += " WHERE NombreSucursal LIKE '%" + busqueda + "%'";
+            }
+
+            CargarListView(consulta);
         }
     }
 }

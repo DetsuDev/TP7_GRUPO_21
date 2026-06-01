@@ -44,13 +44,13 @@
                     <td colspan="2">Busqueda por nombre de sucursal:</td>
                     <td colspan="2" style="font-size: 20px; font-weight: bold;">
                         <asp:TextBox ID="txtNombreSucursal" runat="server" Width="282px"></asp:TextBox>
-                        <asp:Button ID="btnBuscarSucursal" runat="server" Text="Buscar" />
+                        <asp:Button ID="btnBuscarSucursal" runat="server" Text="Buscar" OnClick="btnBuscarSucursal_Click"/>
                     </td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
                     <td colspan="4">
-                        <asp:ListView ID="ListView1" runat="server" DataSourceID="SqlDataSource1" GroupItemCount="3" OnItemCommand="ListView1_ItemCommand">
+                        <asp:ListView ID="ListView1" runat="server" GroupItemCount="3" OnItemCommand="ListView1_ItemCommand" OnPagePropertiesChanging="ListView1_PagePropertiesChanging">
                             <EditItemTemplate>
                                 <td runat="server" style="background-color:#008A8C;color: #FFFFFF;">NombreSucursal:
                                     <asp:TextBox ID="NombreSucursalTextBox" runat="server" Text='<%# Bind("NombreSucursal") %>' />
