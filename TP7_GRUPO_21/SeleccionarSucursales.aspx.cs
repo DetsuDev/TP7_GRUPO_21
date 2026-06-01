@@ -75,5 +75,13 @@ namespace TP7_GRUPO_21
 
             CargarListView(consulta);
         }
+
+        protected void btnProvincia_Click(object sender, EventArgs e)
+        {
+            string idProvincia = ((Button)sender).CommandArgument;
+            string consulta = "SELECT Id_Sucursal, NombreSucursal, DescripcionSucursal, URL_Imagen_Sucursal FROM Sucursal WHERE Id_ProvinciaSucursal = '" + idProvincia + "'";
+            CargarListView(consulta);
+        }
+
     }
 }
